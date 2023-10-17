@@ -59,6 +59,11 @@ class Db
         return $this->stmt;
     }
 
+    public function ejecutarPlus($sql){
+        mysqli_query($this->link,$sql);
+        return mysqli_insert_id($this->link);
+    }
+
     /*M todo para obtener una fila de resultados de la sentencia sql*/
     public function obtener_fila($stmt,$fila){
         if ($fila==0){
