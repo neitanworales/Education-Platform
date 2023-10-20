@@ -12,35 +12,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require '../dao/UsuariosDao.class.php';
 $datos = UsuariosDao::getInstance();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $inputJSON = file_get_contents('php://input');
-    $input = json_decode($inputJSON, TRUE);
-
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    
     $correcto = true;
-    $datosIncorrectos = " hacen falta campos";
-    if (empty($input['email']) || empty($input['password'])) {
+    if (empty($_GET['id']) || empty($_GET['token'])) {
         $correcto = false;
     }
 
     if($correcto){
-
-        $result = $datos->validarUsuario($input['email'],$input['password']);
-        if(empty($result)){
-            $response["mensaje"] = "Unauthorized";
-            $response["code"] = 401;
-            http_response_code(401);
-            echo json_encode($response);
-        }else{
-            $response["code"] = 200;
-            $response["mensaje"] = "Ok";
-            $response["usuario"] = $result[0];
-            http_response_code(200);
-            echo json_encode($response);
-        }
-
+        $valido = $datos->validarToken($_GET['id'],$_GET['token']);
+        $response["success"] = $valido;
+        $response["code"] = $valido ? 200 : 401;
+        $response["mensaje"] = $valido ? "Ok" : "Unauthorized";
+        http_response_code(200);
+        echo json_encode($response);
     } else {
         $response["mensaje"] = "Bad request";
-        $response["resultado"] = $datosIncorrectos;
         $response["code"] = 400;
         http_response_code(400);
         echo json_encode($response);

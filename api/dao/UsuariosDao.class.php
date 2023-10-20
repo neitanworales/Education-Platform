@@ -222,7 +222,13 @@ class UsuariosDao
     }
 
     public function crearToken(){
-        return bin2hex(random_bytes(64));
+        return bin2hex(random_bytes(16));
+    }
+
+    public function validarToken($id, $token){
+        $que ="SELECT * FROM token WHERE id='$id' AND token='$token'";        
+        $array = $this->bd->ObtenerConsulta($que);        
+        return !empty($array);
     }
 
     public function obtenerRolesById($id)
@@ -230,6 +236,39 @@ class UsuariosDao
         $que = "SELECT UR.id_rol, R.nombre FROM usuarios_roles AS UR 
         INNER JOIN roles AS R ON UR.id_rol=R.id 
         WHERE id_usuario='$id' ";
+        return $this->bd->ObtenerConsulta($que);
+    }
+
+    public function validarRolUsuario($id_usuario,$id_rol)
+    {
+        $que = "SELECT id FROM usuarios_roles
+        WHERE id_usuario='$id_usuario' AND id_rol=$id_rol";
+        return empty($this->bd->ObtenerConsulta($que));
+    }
+
+    public function obtenerRolesByEmail($email)
+    {
+        $que = "SELECT UR.id_rol, R.nombre FROM usuarios_roles AS UR 
+        INNER JOIN roles AS R ON UR.id_rol=R.id
+        INNER JOIN usuarios AS U ON UR.id_usuario=U.id 
+        WHERE email='$email' ";
+        return $this->bd->ObtenerConsulta($que);
+    }
+
+    public function agregarRol($id_usuario, $id_rol){
+        $insert = "INSERT INTO usuarios_roles(id, id_usuario, id_rol)"
+        ."VALUES(null,$id_usuario, $id_rol)";
+        return $this->bd->ejecutar($insert);
+    }
+
+    public function quitarRol($id_usuario, $id_rol){
+        $insert = "DELETE FROM usuarios_roles WHERE id_usuario=$id_usuario AND id_rol=$id_rol";
+        return $this->bd->ejecutar($insert);
+    }
+
+    public function obtenerAllRoles()
+    {
+        $que = "SELECT * FROM roles";
         return $this->bd->ObtenerConsulta($que);
     }
 
