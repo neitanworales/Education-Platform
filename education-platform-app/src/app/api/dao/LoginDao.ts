@@ -16,6 +16,7 @@ export class LoginDao {
     usuario?: User;
 
     constructor(
+        @Inject('HttpClient')
         private http: HttpClient,
         private utils: Utils
     ) { }

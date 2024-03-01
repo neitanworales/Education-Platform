@@ -9,7 +9,7 @@ import { environment } from "src/environments/environment";
 export class CursoDao {
 
     constructor(
-        @Inject('http')
+        @Inject('HttpClient')
         private http: HttpClient,
         private utils: Utils
     ) { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { LoginDao } from 'src/app/api/dao/LoginDao';
 import { Router } from '@angular/router';
@@ -14,7 +14,10 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(public loginDao: LoginDao) { }
+  constructor(
+    @Inject('RouterModule')
+    private router: Router, 
+    private loginDao: LoginDao) { }
 
   ngOnInit(): void {
     if (this.loginDao.validarSession()) {
@@ -30,6 +33,7 @@ export class LoginComponent implements OnInit {
           if (result.code == 200) {
             console.log(result.usuario);
             localStorage.setItem('session', JSON.stringify(result.usuario));
+            this.router.navigate(['/dashboard']);
           }
         }
       );

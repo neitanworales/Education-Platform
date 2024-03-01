@@ -6,9 +6,9 @@ import { AuthService } from './auth.service';
 export class AuthGuardService  {
   
   constructor(
-    public auth: AuthService, 
-    @Inject('router')
-    public router: Router) {}
+    private auth: AuthService, 
+    @Inject('RouterModule')
+    private router: Router) {}
 
   async canActivate(): Promise<boolean> {
     if (!await this.auth.isAuthenticated()) {

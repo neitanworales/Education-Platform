@@ -13,8 +13,8 @@ export class RoleGuardService  {
   constructor(
     public loginDao: LoginDao,
     public auth: AuthService,
-    @Inject('router')
-    public router: Router) { }
+    @Inject('RouterModule')
+    private router: Router) { }
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
     // this will be passed from the route config
