@@ -9,7 +9,6 @@ import { environment } from "src/environments/environment";
 export class TemaDao {
     
     constructor(
-        @Inject('HttpClient')
         private http: HttpClient,
         private utils: Utils
     ) { }

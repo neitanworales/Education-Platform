@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Component, Inject, Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, Data } from '@angular/router';
 import { LoginDao } from '../../api/dao/LoginDao';
 import { AuthService } from './auth.service';
@@ -11,9 +11,8 @@ export class RoleGuardService  {
   roles? : Role[];
 
   constructor(
-    public loginDao: LoginDao,
-    public auth: AuthService,
-    @Inject('RouterModule')
+    private loginDao: LoginDao,
+    private auth: AuthService,
     private router: Router) { }
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {

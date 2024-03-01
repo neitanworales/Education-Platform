@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
@@ -14,6 +13,7 @@ import { EstructuraComponent } from './components/admin/estructura/estructura.co
 import { MaestrosComponent } from './components/admin/maestros/maestros.component';
 import { RecursosComponent } from './components/admin/recursos/recursos.component';
 import { TemasComponent } from './components/admin/temas/temas.component';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,12 +28,6 @@ const routes: Routes = [
   { path: 'administracion/maestros', component: MaestrosComponent, canActivate: [RoleGuard] , data: { roles: ["SUPERUSUARIO","ADMINISTRADOR"]}  },
   { path: 'administracion/recursos', component: RecursosComponent, canActivate: [RoleGuard] , data: { roles: ["SUPERUSUARIO","ADMINISTRADOR"]}  },
   { path: 'administracion/temas', component: TemasComponent, canActivate: [RoleGuard] , data: { roles: ["SUPERUSUARIO","ADMINISTRADOR"]}  },
-];
-
-const routes2: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

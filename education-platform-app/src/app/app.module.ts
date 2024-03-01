@@ -1,8 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
@@ -11,7 +7,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginDao } from './api/dao/LoginDao';
 import { Utils } from './api/Utils';
-import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 import { AuthService } from './services/guards/auth.service';
@@ -26,6 +21,11 @@ import { AlumnosComponent } from './components/admin/alumnos/alumnos.component';
 import { MaestrosComponent } from './components/admin/maestros/maestros.component';
 import { CursoDao } from './api/dao/admin/CursoDao';
 import { TemaDao } from './api/dao/admin/TemaDao';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -46,13 +46,18 @@ import { TemaDao } from './api/dao/admin/TemaDao';
     MaestrosComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    FormsModule, 
+    BrowserModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
   ],
   providers: [
+    {
+      provide: 'router', useFactory: (rotuer: Router) => {
+        return new Router();
+      }
+    },
     Utils,
     LoginDao,
     AuthGuardService,

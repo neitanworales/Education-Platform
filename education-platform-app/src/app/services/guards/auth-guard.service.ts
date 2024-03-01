@@ -7,7 +7,6 @@ export class AuthGuardService  {
   
   constructor(
     private auth: AuthService, 
-    @Inject('RouterModule')
     private router: Router) {}
 
   async canActivate(): Promise<boolean> {

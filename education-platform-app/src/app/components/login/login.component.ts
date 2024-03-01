@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    @Inject('RouterModule')
     private router: Router, 
     private loginDao: LoginDao) { }
 

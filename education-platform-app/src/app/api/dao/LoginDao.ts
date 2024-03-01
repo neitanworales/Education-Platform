@@ -10,13 +10,11 @@ import { RoleResponse } from "src/app/models/Responses/RoleResponse";
 import { Data } from "@angular/router";
 
 @Injectable()
-
 export class LoginDao {
 
     usuario?: User;
 
     constructor(
-        @Inject('HttpClient')
         private http: HttpClient,
         private utils: Utils
     ) { }
