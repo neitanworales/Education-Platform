@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, Data } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, Data } from '@angular/router';
 import { LoginDao } from '../../api/dao/LoginDao';
 import { AuthService } from './auth.service';
 import { lastValueFrom, Observable } from 'rxjs';
 import { Role } from 'src/app/models/Role';
 
 @Injectable()
-export class RoleGuardService implements CanActivate {
+export class RoleGuardService  {
 
   roles? : Role[];
 
