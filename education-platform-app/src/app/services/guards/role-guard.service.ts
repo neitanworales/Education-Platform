@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, Data } from '@angular/router';
 import { LoginDao } from '../../api/dao/LoginDao';
 import { AuthService } from './auth.service';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
+import { Role } from 'src/app/models/Role';
 
 @Injectable()
 export class RoleGuardService implements CanActivate {
+
+  roles? : Role[];
+
   constructor(
     public loginDao: LoginDao,
     public auth: AuthService,
@@ -14,26 +18,20 @@ export class RoleGuardService implements CanActivate {
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
     // this will be passed from the route config
     // on the data property
-    const expectedAdmin = route.data['isAdmin'];
+    const expectedAdmin = route.data;
     // decode the token to get its payload
 
     if (! await this.auth.isAuthenticated()) {
       this.router.navigate(['login']);
       return false;
     }
-
-    if (await this.validateRol(expectedAdmin)) {
-      this.router.navigate(['seguimiento']);
-      return false;
-    }
-    return true;
+    const valuie =  this.validateRole(expectedAdmin);
+    return valuie;
   }
 
-  private async validateRol(expectedAdmin: boolean): Promise<boolean> {
-    if (expectedAdmin) {
-      //const result = this.loginDao.isAdmin()
-      //return lastValueFrom(result);
-    }
-    return true;
+  validateRole(expectedAdmin: Data) : Promise<boolean> {
+    const resultado = this.loginDao.getValidarRoles(expectedAdmin["roles"]);
+    return lastValueFrom(resultado);
   }
+
 }

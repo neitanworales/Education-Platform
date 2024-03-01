@@ -1,12 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: *");   
-header("Content-Type: application/json; charset=UTF-8");    
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");    
-header("Access-Control-Max-Age: 3600");    
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"); 
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
-    return 0;    
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    return 0;
 }
 
 require '../dao/SchoolDao.class.php';
@@ -15,13 +15,13 @@ $datos = SchoolDao::getInstance();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
     if (empty($id)) {
-        $response['cursos'] = $datos->getCursos();
+        $response['resultado'] = $datos->getClases();
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);
         echo json_encode($response);
     } else {
-        $response['cursos'] = $datos->getCursosById($id);
+        $response['resultado'] = $datos->getClasesById($id);
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);
@@ -32,24 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $input = json_decode($inputJSON, TRUE);
 
     $correcto = true;
-    $datosIncorrectos = " Hace falta: nombre";
-    if (empty($input['nombre'])) {
+    $datosIncorrectos = " Hace falta: titulo o tema_id";
+    if (empty($input['titulo']) || empty($input['tema_id'])) {
         $correcto = false;
     }
 
     if ($correcto) {
 
-        $nombre = !empty($input['nombre']) ? $input['nombre'] : null;
+        $titulo = !empty($input['titulo']) ? $input['titulo'] : null;
         $descripcion = !empty($input['descripcion']) ? $input['descripcion'] : null;
-        $instructor = !empty($input['instructor']) ? $input['instructor'] : null;
-        $fecha_inicio = !empty($input['fecha_inicio']) ? $input['fecha_inicio'] : null;
-        $fecha_fin = !empty($input['fecha_fin']) ? $input['fecha_fin'] : null;
-        $cupo_maximo = !empty($input['cupo_maximo']) ? $input['cupo_maximo'] : null;
-        $precio = !empty($input['precio']) ? $input['precio'] : null;
-        $nivel = !empty($input['nivel']) ? $input['nivel'] : null;
-        $categoria = !empty($input['categoria']) ? $input['categoria'] : null;
+        $tema_id = !empty($input['tema_id']) ? $input['tema_id'] : null;
 
-        if ($datos->guardarCurso($nombre, $descripcion, $instructor, $fecha_inicio, $fecha_fin, $cupo_maximo, $precio, $nivel, $categoria)) {
+        if ($datos->guardarTema($tema_id, $titulo, $descripcion)) {
             $response["mensaje"] = "Guardado correctamente";
             $response["code"] = 201;
             http_response_code(201);
@@ -73,18 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $input = json_decode($inputJSON, TRUE);
 
     $id = !empty($input['id']) ? $input['id'] : null;
-    $nombre = !empty($input['nombre']) ? $input['nombre'] : null;
+    $titulo = !empty($input['titulo']) ? $input['titulo'] : null;
     $descripcion = !empty($input['descripcion']) ? $input['descripcion'] : null;
-    $instructor = !empty($input['instructor']) ? $input['instructor'] : null;
-    $fecha_inicio = !empty($input['fecha_inicio']) ? $input['fecha_inicio'] : null;
-    $fecha_fin = !empty($input['fecha_fin']) ? $input['fecha_fin'] : null;
-    $cupo_maximo = !empty($input['cupo_maximo']) ? $input['cupo_maximo'] : null;
-    $precio = !empty($input['precio']) ? $input['precio'] : null;
-    $nivel = !empty($input['nivel']) ? $input['nivel'] : null;
-    $categoria = !empty($input['categoria']) ? $input['categoria'] : null;
+    $tema_id = !empty($input['tema_id']) ? $input['tema_id'] : null;
     $estatus = !empty($input['estatus']) ? $input['estatus'] : null;
 
-    if ($datos->actualizarCurso($id, $nombre, $descripcion, $instructor, $fecha_inicio, $fecha_fin, $cupo_maximo, $precio, $nivel, $categoria, $estatus)) {
+    if ($datos->actualizarClase($id,$tema_id,$titulo,$descripcion,$estatus)) {
         $response["mensaje"] = "Guardado correctamente";
         $response["code"] = 200;
         http_response_code(200);
@@ -98,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $id = $_GET['id'];
-    $response['success'] = $datos->desactivarCurso($id);
+    $response['success'] = $datos->desactivarClase($id);
     $response["mensaje"] = "Ok";
     $response["code"] = 200;
     http_response_code(200);

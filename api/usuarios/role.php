@@ -1,12 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Origin: *");   
+header("Content-Type: application/json; charset=UTF-8");    
+header("Access-Control-Allow-Methods: POST, DELETE, OPTIONS");    
+header("Access-Control-Max-Age: 3600");    
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"); 
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    return 0;
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
+    return 0;    
 }
 
 require '../dao/UsuariosDao.class.php';
@@ -15,6 +15,7 @@ $datos = UsuariosDao::getInstance();
 $id_usuario = $_GET['id_usuario'];
 $id_rol = $_GET['id_rol'];
 $email = $_GET['email'];
+$token = $_GET['token'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -66,14 +67,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
     }
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!empty($email)) {
-        $response['success'] = $datos->obtenerRolesByEmail($email);
+    if (!empty($token)) {
+        $roles =  $datos->obtenerRolesByToken($token);
+        $response['roles'] = $roles;
+        $response['success'] = !empty($roles);
+        $response["mensaje"] = "Ok";
+        $response["code"] = 200;
+        http_response_code(200);
+        echo json_encode($response);
+    } else if (!empty($email)) {
+        $roles = $datos->obtenerRolesByEmail($email);
+        $response['roles'] = $roles;
+        $response['success'] = !empty($roles);
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);
         echo json_encode($response);
     } else {
-        $response['resultado'] = $datos->obtenerAllRoles();
+        $response['roles'] = $datos->obtenerAllRoles();
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);

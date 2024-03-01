@@ -255,6 +255,15 @@ class UsuariosDao
         return $this->bd->ObtenerConsulta($que);
     }
 
+    public function obtenerRolesByToken($token)
+    {
+        $que = "SELECT UR.id_rol, R.nombre FROM usuarios_roles AS UR 
+        INNER JOIN roles AS R ON UR.id_rol=R.id
+        INNER JOIN token AS T ON UR.id_usuario=T.id
+        WHERE token = '$token'";
+        return $this->bd->ObtenerConsulta($que);
+    }
+
     public function agregarRol($id_usuario, $id_rol){
         $insert = "INSERT INTO usuarios_roles(id, id_usuario, id_rol)"
         ."VALUES(null,$id_usuario, $id_rol)";

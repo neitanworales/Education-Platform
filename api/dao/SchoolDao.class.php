@@ -173,6 +173,51 @@ class SchoolDao{
         WHERE CT.tema_id=$tema_id";
         return $this->bd->ObtenerConsulta($que);
     }
+
+    public function getClases(){
+        $que = "SELECT * FROM clases WHERE estatus<>0";
+        return $this->bd->ObtenerConsulta($que);
+    }
+
+    public function getClasesById($id){
+        $que = "SELECT * FROM clases WHERE id=$id AND estatus<>0";
+        return $this->bd->ObtenerConsulta($que);
+    }
+
+    public function guardarClase($tema_id,$titulo,$descripcion){
+        $insert = "INSERT INTO clases(id,tema_id,titulo,descripcion,estatus,fecha_creacion)"
+        ."VALUES (null,'$tema_id','$titulo','$descripcion','1',NOW());";
+        return $this->bd->ejecutar($insert);
+    }
+
+    public function actualizar($id,$tema_id,$titulo,$descripcion,$estatus){
+        $update = "UPDATE clases SET ";
+
+        if (!empty($tema_id)) {
+            $update .= "tema_id = '$tema_id', ";
+        }
+
+        if (!empty($titulo)) {
+            $update .= "titulo = '$titulo', ";
+        }
+
+        if (!empty($descripcion)) {
+            $update .= "descripcion='$descripcion', ";
+        }
+
+        if (!empty($estatus)) {
+            $update .= "estatus='$estatus', ";
+        }
+
+        $update .= " fecha_updated=NOW()";
+        $update .= " WHERE id=$id";
+        return $this->bd->ejecutar($update);
+    }
+
+    public function desactivarClase($id){
+        $update = "UPDATE clases SET estatus=0, deleted_date=NOW() WHERE id=$id";
+        return $this->bd->ejecutar($update);
+    }
 }
 
 ?>

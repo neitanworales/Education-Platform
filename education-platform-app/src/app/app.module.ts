@@ -16,6 +16,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 import { AuthService } from './services/guards/auth.service';
 import { RoleGuardService } from './services/guards/role-guard.service';
+import { SidebarComponent } from './components/admin/sidebar/sidebar.component';
+import { EstructuraComponent } from './components/admin/estructura/estructura.component';
+import { CursosComponent } from './components/admin/cursos/cursos.component';
+import { TemasComponent } from './components/admin/temas/temas.component';
+import { ClasesComponent } from './components/admin/clases/clases.component';
+import { RecursosComponent } from './components/admin/recursos/recursos.component';
+import { AlumnosComponent } from './components/admin/alumnos/alumnos.component';
+import { MaestrosComponent } from './components/admin/maestros/maestros.component';
+import { CursoDao } from './api/dao/admin/CursoDao';
+import { TemaDao } from './api/dao/admin/TemaDao';
 
 @NgModule({
   declarations: [
@@ -25,14 +35,22 @@ import { RoleGuardService } from './services/guards/role-guard.service';
     RegistroComponent,
     HeaderComponent,
     FooterComponent,
-    DashboardComponent
+    DashboardComponent,
+    SidebarComponent,
+    EstructuraComponent,
+    CursosComponent,
+    TemasComponent,
+    ClasesComponent,
+    RecursosComponent,
+    AlumnosComponent,
+    MaestrosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule, 
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     Utils,
@@ -40,6 +58,8 @@ import { RoleGuardService } from './services/guards/role-guard.service';
     AuthGuardService,
     AuthService,
     RoleGuardService,
+    CursoDao,
+    TemaDao,
   ],
   bootstrap: [AppComponent]
 })

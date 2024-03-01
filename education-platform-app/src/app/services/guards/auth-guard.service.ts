@@ -11,11 +11,9 @@ export class AuthGuardService implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     if (!await this.auth.isAuthenticated()) {
-      console.log("deslogeado");
       this.router.navigate(['login']);
       return false;
     }
-    console.log("aun logeado");
     return true;
   }
 

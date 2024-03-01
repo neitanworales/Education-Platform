@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -15,13 +15,13 @@ $datos = SchoolDao::getInstance();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
     if (empty($id)) {
-        $response['resultado'] = $datos->getTemas();
+        $response['temas'] = $datos->getTemas();
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);
         echo json_encode($response);
     } else {
-        $response['resultado'] = $datos->getTemasById($id);
+        $response['temas'] = $datos->getTemasById($id);
         $response["mensaje"] = "Ok";
         $response["code"] = 200;
         http_response_code(200);

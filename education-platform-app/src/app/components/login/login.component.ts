@@ -19,6 +19,10 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, public loginDao: LoginDao, private router: Router) { }
 
   ngOnInit(): void {
+    if(this.loginDao.validarSession()){
+      this.router.navigate(['dashboard']);
+    }
+
     this.registerForm = this.formBuilder.group({
       username: ["", Validators.required],
       password: ["", Validators.required],
@@ -41,7 +45,7 @@ export class LoginComponent implements OnInit {
           console.log(result.usuario);
           localStorage.setItem('session', JSON.stringify(result.usuario));
           this.loginError = false;
-          this.router.navigate(['inscripciones']);
+          this.router.navigate(['dashboard']);
         } else {
           this.loginError = true;
         }
