@@ -30,8 +30,14 @@ const routes: Routes = [
   { path: 'administracion/temas', component: TemasComponent, canActivate: [RoleGuard] , data: { roles: ["SUPERUSUARIO","ADMINISTRADOR"]}  },
 ];
 
+const routes2: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes2)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

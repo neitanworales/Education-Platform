@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Utils } from "../../Utils";
 import { Observable } from "rxjs";
 import { CursoResponse } from "src/app/models/Responses/CursoResponse";
@@ -9,6 +9,7 @@ import { environment } from "src/environments/environment";
 export class CursoDao {
 
     constructor(
+        @Inject('http')
         private http: HttpClient,
         private utils: Utils
     ) { }

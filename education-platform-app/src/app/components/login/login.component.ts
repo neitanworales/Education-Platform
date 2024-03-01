@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { LoginDao } from 'src/app/api/dao/LoginDao';
 import { Router } from '@angular/router';
 
@@ -9,52 +9,30 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  username?: String = "";
-  password?: String = "";
+  loginForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+  });
 
-  registerForm!: UntypedFormGroup;
-  submitted = false;
-  loginError?: boolean;
-
-  constructor(private formBuilder: UntypedFormBuilder, public loginDao: LoginDao, private router: Router) { }
+  constructor(public loginDao: LoginDao) { }
 
   ngOnInit(): void {
-    if(this.loginDao.validarSession()){
-      this.router.navigate(['dashboard']);
+    if (this.loginDao.validarSession()) {
+
     }
-
-    this.registerForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required],
-    })
-    this.loginError = false;
-  }
-
-  get form() {
-    return this.registerForm?.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
-    if (this.registerForm?.invalid) {
-      return;
-    }
-    this.loginDao.login(this.username!, this.password!).subscribe(
-      result => {
-        if (result.code==200) {
-          console.log(result.usuario);
-          localStorage.setItem('session', JSON.stringify(result.usuario));
-          this.loginError = false;
-          this.router.navigate(['dashboard']);
-        } else {
-          this.loginError = true;
+    if (this.loginForm.valid) {
+      this.loginDao.login(this.loginForm.controls['username'].value!, 
+                          this.loginForm.controls['password'].value!).subscribe(
+        result => {
+          if (result.code == 200) {
+            console.log(result.usuario);
+            localStorage.setItem('session', JSON.stringify(result.usuario));
+          }
         }
-      }
-    );
-  }
-
-  onReset() {
-    this.submitted = false;
-    this.registerForm?.reset();
+      );
+    }
   }
 }

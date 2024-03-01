@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
@@ -7,6 +7,7 @@ export class AuthGuardService  {
   
   constructor(
     public auth: AuthService, 
+    @Inject('router')
     public router: Router) {}
 
   async canActivate(): Promise<boolean> {

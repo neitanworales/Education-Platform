@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Utils } from "../Utils";
@@ -10,6 +10,7 @@ import { RoleResponse } from "src/app/models/Responses/RoleResponse";
 import { Data } from "@angular/router";
 
 @Injectable()
+
 export class LoginDao {
 
     usuario?: User;
