@@ -1,7 +1,7 @@
 <app-sidebar></app-sidebar>
 
 <div class="container">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add">
+  <button type="button" class="btn btn-primary" (click)="this.temaForm = initForm()" data-bs-toggle="modal" data-bs-target="#modal">
     Launch static backdrop modal
   </button>
 </div>
@@ -16,6 +16,7 @@
         <th scope="col">Presentador</th>
         <th scope="col">Fecha Creación</th>
         <th scope="col">Fecha Actualizado</th>
+        <th scope="col">Edición</th>
       </tr>
     </thead>
     <tbody>
@@ -26,18 +27,25 @@
         <td>{{t.presentador}}</td>
         <td>{{t.fecha_creacion}}</td>
         <td>{{t.fecha_updated}}</td>
+        <td>
+          <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <button type="button" class="btn btn-outline-primary" (click)="loadOnModal(t)" data-bs-toggle="modal" data-bs-target="#modal">E</button>
+            <button type="button" class="btn btn-outline-primary">Middle</button>
+            <button type="button" class="btn btn-outline-primary">Right</button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;"
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalScrollableTitle" style="display: none;"
   aria-hidden="true">
   <form [formGroup]="temaForm" (ngSubmit)="onSubmit()">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalScrollableTitle">{{this.temaForm.controls['isUpdate'].value?'Actualizar':'Agregar'}} registro</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -45,20 +53,18 @@
           <input id="inputId" type="text" formControlName="id" class="form-control">
           <label for="inputTitulo">Titulo: </label>
           <input id="inputTitulo" type="text" formControlName="titulo" class="form-control">
-          <label for="inputdescripcion">descripcion: </label>
+          <label for="inputdescripcion">Descripcion: </label>
           <input id="inputdescripcion" type="text" formControlName="descripcion" class="form-control">
-          <label for="inputpresentador">presentador: </label>
+          <label for="inputpresentador">Presentador: </label>
           <input id="inputpresentador" type="text" formControlName="presentador" class="form-control">
-          <label for="inputcategoria">categoria: </label>
+          <label for="inputcategoria">Categoria: </label>
           <input id="inputcategoria" type="text" formControlName="categoria" class="form-control">
-          <label for="inputestatus">estatus: </label>
+          <label for="inputestatus">Estatus: </label>
           <input id="inputestatus" type="text" formControlName="estatus" class="form-control">
-          <label for="inputfecha_creacion">categoria: </label>
+          <label for="inputfecha_creacion">Fecha de Creación: </label>
           <input id="inputfecha_creacion" type="text" formControlName="fecha_creacion" class="form-control">
-          <label for="inputfecha_updated">fecha_updated: </label>
+          <label for="inputfecha_updated">Actualización: </label>
           <input id="inputfecha_updated" type="text" formControlName="fecha_updated" class="form-control">
-          <label for="inputdeleted_date">deleted_date: </label>
-          <input id="inputdeleted_date" type="text" formControlName="deleted_date" class="form-control">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
