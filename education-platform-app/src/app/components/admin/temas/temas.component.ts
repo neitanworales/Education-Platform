@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { TemaDao } from 'src/app/api/dao/admin/TemaDao';
 import { Tema } from 'src/app/models/Tema';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-temas',
@@ -9,21 +10,22 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./temas.component.scss']
 })
 export class TemasComponent {
-  temaForm = new FormGroup({
-    id: new FormControl(''),
-    titulo: new FormControl(''),
-    descripcion: new FormControl(''),
-    presentador: new FormControl(''),
-    categoria: new FormControl(''),
-    estatus: new FormControl(''),
-    fecha_creacion: new FormControl(''),
-    fecha_updated: new FormControl(''),
-    deleted_date: new FormControl(''),
+  temaForm = this.formBuilder.group({
+    id: [''],
+    titulo: ['', Validators.required],
+    descripcion: [''],
+    presentador: [''],
+    categoria: [''],
+    estatus: [''],
+    fecha_creacion: [''],
+    fecha_updated: [''],
+    deleted_date: [''],
   });
   temas?: Tema[];
 
   constructor(
-    public dao: TemaDao
+    public dao: TemaDao,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,6 @@ export class TemasComponent {
   }
 
   onSubmit(){
-    console.warn(this.temaForm.value);
+    console.warn(this.temaForm.controls['titulo'].value);
   }
 }
